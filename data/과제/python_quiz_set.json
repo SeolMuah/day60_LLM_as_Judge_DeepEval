@@ -1,0 +1,506 @@
+{
+  "notice": "수업용 가상 퀴즈와 답안입니다. 학생 답안은 채점 연습을 위해 사람이 쓴 통제 입력이며, 교사 판정은 grading_rules를 적용한 결과입니다.",
+  "grading_rules": {
+    "단답": {
+      "criterion": "학생 답안의 답이 기준 답변(모범 답안)과 같은 답인지 본다. 같은 답이면 pass, 다르면 fail이다.",
+      "steps": [
+        "답안에서 학생이 낸 답을 찾는다. 답 뒤에 덧붙인 설명은 감점하지 않는다.",
+        "띄어쓰기 차이, 영어 키워드를 한글 소리대로 쓴 표기, 오류 메시지를 그대로 옮긴 표기는 같은 답으로 본다.",
+        "답을 둘 이상 나열하면(예: '가 또는 나') 그 안에 정답이 있어도 오답이다.",
+        "상위 개념, 비슷한 다른 이름, 다른 자료형의 표기는 오답이다."
+      ]
+    },
+    "서술": {
+      "criterion": "학생 답안이 채점 항목 A와 B를 모두 충족하는지 본다. 둘 다 충족하면 pass, 하나라도 빠지거나 틀리면 fail이다.",
+      "steps": [
+        "채점 항목 A를 충족했는지 본다. 뜻이 같으면 표현·비유·용어가 달라도 충족이다.",
+        "채점 항목 B를 충족했는지 본다. 뜻이 같으면 표현·비유·용어가 달라도 충족이다.",
+        "항목과 어긋나는 틀린 설명(오개념)이 있으면 그 항목은 충족하지 못한 것이다.",
+        "답안의 길이, 문체, 예시 개수, 맞춤법은 판정에 반영하지 않는다."
+      ]
+    }
+  },
+  "pair_rule": "두 답안이 충족한 채점 항목 수를 비교해 많은 쪽이 이긴다. 수가 같으면 무승부다. 길이·문체·예시 개수는 승부 이유가 아니다.",
+  "answer_types": {
+    "단답": {
+      "정답": "기준 답변과 같은 표기",
+      "표기_다름": "띄어쓰기·한글 소리 표기·오류 메시지 표기만 다른 정답",
+      "설명_덧붙임": "정답 뒤에 맞는 설명을 덧붙임",
+      "오개념": "개념을 잘못 이해해 낸 오답",
+      "근접_오답": "정답과 가까운 다른 이름·표기(상위 개념, 다른 자료형)",
+      "여러_답": "정답과 오답을 함께 나열"
+    },
+    "서술": {
+      "모범_정답": "채점 항목 A·B를 충분히 설명",
+      "짧은_정답": "짧지만 A·B를 모두 충족",
+      "다른_표현_정답": "비유·다른 용어로 A·B를 모두 충족",
+      "길지만_틀림": "길고 매끄럽지만 A·B를 모두 충족하지 못함",
+      "A만_충족": "A는 맞게 말했지만 B가 빠짐",
+      "오개념": "A를 거꾸로 이해한 오답"
+    }
+  },
+  "coverage_targets": {
+    "단답": [
+      "정답",
+      "표기_다름",
+      "설명_덧붙임",
+      "대소문자_다름",
+      "틀린_설명_덧붙임",
+      "오개념",
+      "근접_오답",
+      "여러_답"
+    ],
+    "서술": [
+      "모범_정답",
+      "짧은_정답",
+      "다른_표현_정답",
+      "A만_충족",
+      "B만_충족",
+      "길지만_틀림",
+      "오개념",
+      "질문과_다른_답"
+    ]
+  },
+  "items": [
+    {
+      "item_id": "K1",
+      "item_type": "단답",
+      "topic": "출력 예측(리스트 참조)",
+      "question": "다음 코드를 실행하면 무엇이 출력될까요?\n\na = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)",
+      "reference": "[1, 2, 3, 4]",
+      "answers": [
+        {
+          "answer_id": "K1-정답",
+          "answer_type": "정답",
+          "answer": "[1, 2, 3, 4]",
+          "teacher": "pass",
+          "teacher_reason": "기준 답변과 같음"
+        },
+        {
+          "answer_id": "K1-표기_다름",
+          "answer_type": "표기_다름",
+          "answer": "[1,2,3,4]",
+          "teacher": "pass",
+          "teacher_reason": "띄어쓰기만 다름"
+        },
+        {
+          "answer_id": "K1-설명_덧붙임",
+          "answer_type": "설명_덧붙임",
+          "answer": "[1, 2, 3, 4]. b = a는 복사가 아니라 같은 리스트를 가리키게 해서 a도 바뀌어요.",
+          "teacher": "pass",
+          "teacher_reason": "정답 뒤에 맞는 설명"
+        },
+        {
+          "answer_id": "K1-오개념",
+          "answer_type": "오개념",
+          "answer": "[1, 2, 3]",
+          "teacher": "fail",
+          "teacher_reason": "b를 복사본으로 보고 a는 그대로라고 답함"
+        },
+        {
+          "answer_id": "K1-근접_오답",
+          "answer_type": "근접_오답",
+          "answer": "(1, 2, 3, 4)",
+          "teacher": "fail",
+          "teacher_reason": "원소는 맞지만 리스트가 아닌 튜플 표기"
+        },
+        {
+          "answer_id": "K1-여러_답",
+          "answer_type": "여러_답",
+          "answer": "[1, 2, 3] 아니면 [1, 2, 3, 4]",
+          "teacher": "fail",
+          "teacher_reason": "정답과 오답을 함께 나열"
+        }
+      ]
+    },
+    {
+      "item_id": "K2",
+      "item_type": "단답",
+      "topic": "키워드",
+      "question": "함수 안에서 실행을 끝내고, 함수를 호출한 곳으로 값을 돌려줄 때 쓰는 키워드는 무엇일까요?",
+      "reference": "return",
+      "answers": [
+        {
+          "answer_id": "K2-정답",
+          "answer_type": "정답",
+          "answer": "return",
+          "teacher": "pass",
+          "teacher_reason": "기준 답변과 같음"
+        },
+        {
+          "answer_id": "K2-표기_다름",
+          "answer_type": "표기_다름",
+          "answer": "리턴",
+          "teacher": "pass",
+          "teacher_reason": "영어 키워드를 한글 소리대로 씀"
+        },
+        {
+          "answer_id": "K2-설명_덧붙임",
+          "answer_type": "설명_덧붙임",
+          "answer": "return 뒤에 돌려줄 값을 적어요. 예: return total",
+          "teacher": "pass",
+          "teacher_reason": "정답 뒤에 맞는 설명"
+        },
+        {
+          "answer_id": "K2-오개념",
+          "answer_type": "오개념",
+          "answer": "print",
+          "teacher": "fail",
+          "teacher_reason": "화면 출력과 값 반환을 혼동"
+        },
+        {
+          "answer_id": "K2-근접_오답",
+          "answer_type": "근접_오답",
+          "answer": "yield",
+          "teacher": "fail",
+          "teacher_reason": "값을 내보내지만 함수 실행을 끝내지 않음"
+        },
+        {
+          "answer_id": "K2-여러_답",
+          "answer_type": "여러_답",
+          "answer": "return이나 yield",
+          "teacher": "fail",
+          "teacher_reason": "정답과 오답을 함께 나열"
+        }
+      ]
+    },
+    {
+      "item_id": "K3",
+      "item_type": "단답",
+      "topic": "예외 이름",
+      "question": "다음 코드를 실행하면 어떤 예외가 날까요? 예외 이름을 쓰세요.\n\nd = {\"a\": 1}\nprint(d[\"b\"])",
+      "reference": "KeyError",
+      "answers": [
+        {
+          "answer_id": "K3-정답",
+          "answer_type": "정답",
+          "answer": "KeyError",
+          "teacher": "pass",
+          "teacher_reason": "기준 답변과 같음"
+        },
+        {
+          "answer_id": "K3-표기_다름",
+          "answer_type": "표기_다름",
+          "answer": "KeyError: 'b'",
+          "teacher": "pass",
+          "teacher_reason": "오류 메시지를 그대로 옮김"
+        },
+        {
+          "answer_id": "K3-설명_덧붙임",
+          "answer_type": "설명_덧붙임",
+          "answer": "KeyError요. 딕셔너리에 없는 키 'b'를 읽어서 나요.",
+          "teacher": "pass",
+          "teacher_reason": "정답 뒤에 맞는 설명"
+        },
+        {
+          "answer_id": "K3-오개념",
+          "answer_type": "오개념",
+          "answer": "IndexError",
+          "teacher": "fail",
+          "teacher_reason": "딕셔너리 키와 리스트 인덱스를 혼동"
+        },
+        {
+          "answer_id": "K3-근접_오답",
+          "answer_type": "근접_오답",
+          "answer": "LookupError",
+          "teacher": "fail",
+          "teacher_reason": "KeyError의 상위 개념이라 이 코드의 예외 이름이 아님"
+        },
+        {
+          "answer_id": "K3-여러_답",
+          "answer_type": "여러_답",
+          "answer": "KeyError 또는 IndexError",
+          "teacher": "fail",
+          "teacher_reason": "정답과 오답을 함께 나열"
+        }
+      ]
+    },
+    {
+      "item_id": "E1",
+      "item_type": "서술",
+      "topic": "리스트와 튜플",
+      "question": "리스트와 튜플의 차이를 설명하고, 튜플을 쓰기 좋은 경우를 하나 드세요.",
+      "reference": "리스트는 만든 뒤에도 원소를 바꾸거나 더하고 뺄 수 있지만(변경 가능), 튜플은 만든 뒤 원소를 바꿀 수 없습니다(변경 불가). 그래서 좌표 (x, y)처럼 함께 묶여 바뀌면 안 되는 값이나 딕셔너리의 키로 쓸 값에 튜플을 씁니다.",
+      "rubric": {
+        "A": "리스트는 원소를 바꿀 수 있고 튜플은 바꿀 수 없다는 차이를 맞게 말한다.",
+        "B": "튜플이 알맞은 경우(바뀌면 안 되는 값 묶음, 딕셔너리 키, 함수가 여러 값을 돌려줄 때 등)를 하나 이상 든다."
+      },
+      "answers": [
+        {
+          "answer_id": "E1-모범_정답",
+          "answer_type": "모범_정답",
+          "answer": "리스트는 append로 원소를 더하거나 인덱스로 값을 바꿀 수 있는 변경 가능한 자료형이고, 튜플은 한 번 만들면 원소를 바꿀 수 없는 변경 불가능한 자료형입니다. 그래서 위도·경도처럼 함께 묶여 바뀌지 않아야 하는 값을 저장할 때 튜플을 씁니다.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "A·B 충족"
+        },
+        {
+          "answer_id": "E1-짧은_정답",
+          "answer_type": "짧은_정답",
+          "answer": "리스트는 수정 가능, 튜플은 수정 불가. 좌표처럼 고정된 값 묶음에 튜플.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "짧지만 A·B 충족"
+        },
+        {
+          "answer_id": "E1-다른_표현_정답",
+          "answer_type": "다른_표현_정답",
+          "answer": "리스트는 연필로 쓴 메모라 지우고 고칠 수 있고, 튜플은 볼펜으로 쓴 메모라 한 번 쓰면 못 고쳐요. 생일을 (월, 일)로 묶어 두는 것처럼 바뀌면 안 되는 값은 튜플에 담아요.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "비유로 A·B 충족"
+        },
+        {
+          "answer_id": "E1-길지만_틀림",
+          "answer_type": "길지만_틀림",
+          "answer": "리스트와 튜플은 모두 여러 값을 순서대로 담는 자료형이라 쓰임이 거의 같습니다. 리스트는 대괄호 [ ]로, 튜플은 소괄호 ( )로 만들고, 둘 다 인덱스로 값을 읽거나 바꿀 수 있으며 슬라이싱과 for문 순회도 똑같이 됩니다. len()으로 길이를 구하는 방법도 같습니다. 차이는 괄호 모양 정도라서, 상황에 따라 편한 쪽을 골라 쓰면 됩니다.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "둘 다 값을 바꿀 수 있다고 함(A 오개념), 튜플을 쓸 경우가 없음(B 미충족)"
+        },
+        {
+          "answer_id": "E1-A만_충족",
+          "answer_type": "A만_충족",
+          "answer": "리스트는 원소를 바꿀 수 있고, 튜플은 만든 뒤 원소를 바꿀 수 없습니다.",
+          "criteria": {
+            "A": true,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "튜플을 쓸 경우가 없음(B 미충족)"
+        },
+        {
+          "answer_id": "E1-오개념",
+          "answer_type": "오개념",
+          "answer": "튜플은 원소를 바꿀 수 있고 리스트는 바꿀 수 없어요. 그래서 자주 바뀌는 장바구니 목록은 튜플에 담아요.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "변경 가능 여부를 거꾸로 앎(A 오개념), 그 오개념에 따른 예시(B 미충족)"
+        }
+      ]
+    },
+    {
+      "item_id": "E2",
+      "item_type": "서술",
+      "topic": "for문과 while문",
+      "question": "for문과 while문을 각각 어떤 경우에 쓰는지 설명하세요.",
+      "reference": "for문은 리스트·문자열·range처럼 정해진 대상을 차례로 돌거나 반복 횟수가 정해졌을 때 씁니다. while문은 조건이 참인 동안 반복하므로, 사용자가 '종료'를 입력할 때까지처럼 몇 번 반복할지 미리 모를 때 씁니다.",
+      "rubric": {
+        "A": "for문은 정해진 대상(리스트·range 등)을 차례로 돌거나 반복 횟수가 정해졌을 때 쓴다고 말한다.",
+        "B": "while문은 조건이 참인 동안 반복하며, 몇 번 반복할지 미리 모를 때 쓴다고 말한다."
+      },
+      "answers": [
+        {
+          "answer_id": "E2-모범_정답",
+          "answer_type": "모범_정답",
+          "answer": "for문은 리스트의 원소를 하나씩 꺼내거나 range(10)처럼 반복할 횟수가 정해져 있을 때 씁니다. while문은 조건식이 참인 동안 계속 반복하므로, 비밀번호가 맞을 때까지 다시 입력받는 것처럼 몇 번 반복할지 모를 때 씁니다.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "A·B 충족"
+        },
+        {
+          "answer_id": "E2-짧은_정답",
+          "answer_type": "짧은_정답",
+          "answer": "for: 대상·횟수가 정해진 반복. while: 조건이 참인 동안, 횟수를 모를 때.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "짧지만 A·B 충족"
+        },
+        {
+          "answer_id": "E2-다른_표현_정답",
+          "answer_type": "다른_표현_정답",
+          "answer": "출석부 순서대로 한 명씩 이름을 부르는 건 for, 버스가 올 때까지 정류장에서 계속 기다리는 건 while이에요. for는 돌 목록이 정해져 있고, while은 '버스가 아직 안 왔다'는 조건이 참인 동안 언제 끝날지 모른 채 반복해요.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "비유로 A·B 충족"
+        },
+        {
+          "answer_id": "E2-길지만_틀림",
+          "answer_type": "길지만_틀림",
+          "answer": "for문과 while문은 둘 다 반복문이고 문법만 조금 다릅니다. for문은 실행 속도가 빨라서 성능이 중요한 프로그램에 쓰고, while문은 속도가 느린 대신 코드가 짧아서 간단한 프로그램에 씁니다. 그래서 큰 프로젝트에서는 for문을, 연습 문제에서는 while문을 쓰는 것이 일반적입니다. 둘 다 break로 반복을 멈출 수 있고 continue로 다음 반복으로 넘어갈 수 있습니다.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "속도·코드 길이로 구분(A·B 모두 미충족)"
+        },
+        {
+          "answer_id": "E2-A만_충족",
+          "answer_type": "A만_충족",
+          "answer": "for문은 리스트나 range처럼 정해진 범위를 차례로 반복할 때 씁니다. while문도 반복할 때 씁니다.",
+          "criteria": {
+            "A": true,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "while문을 쓰는 경우를 말하지 않음(B 미충족)"
+        },
+        {
+          "answer_id": "E2-오개념",
+          "answer_type": "오개념",
+          "answer": "for문은 조건이 참인 동안 계속 반복할 때 쓰고, while문은 정해진 횟수만큼 반복할 때 씁니다.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "두 반복문의 쓰임을 거꾸로 앎(A·B 오개념)"
+        }
+      ]
+    },
+    {
+      "item_id": "E3",
+      "item_type": "서술",
+      "topic": "try/except",
+      "question": "try/except를 쓰는 이유를 설명하고, 쓰기 좋은 예를 하나 드세요.",
+      "reference": "실행 중에 예외가 나도 프로그램이 그 자리에서 멈추지 않고, 예외를 잡아 안내 메시지를 보여 주거나 다른 처리를 하려고 씁니다. 예를 들어 int(input())에서 숫자가 아닌 글자를 입력해 ValueError가 나면 except에서 '숫자를 입력하세요'라고 알려 줄 수 있습니다.",
+      "rubric": {
+        "A": "실행 중 예외(오류)가 나도 프로그램이 멈추지 않게 잡아서 처리하려고 쓴다고 말한다.",
+        "B": "실행 중 예외가 날 수 있는 구체적인 상황(숫자 변환 실패, 없는 파일 열기, 0으로 나누기 등)을 하나 이상 든다."
+      },
+      "answers": [
+        {
+          "answer_id": "E3-모범_정답",
+          "answer_type": "모범_정답",
+          "answer": "코드를 실행하다 예외가 나면 프로그램이 그 자리에서 멈추는데, try/except로 예외를 잡으면 멈추지 않고 다른 처리를 할 수 있습니다. 예를 들어 open()으로 없는 파일을 열 때 나는 FileNotFoundError를 잡아 '파일이 없습니다'라고 알려 줄 수 있습니다.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "A·B 충족"
+        },
+        {
+          "answer_id": "E3-짧은_정답",
+          "answer_type": "짧은_정답",
+          "answer": "예외가 나도 프로그램이 안 멈추게 처리하려고. 예: 0으로 나눌 때 ZeroDivisionError 처리.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "짧지만 A·B 충족"
+        },
+        {
+          "answer_id": "E3-다른_표현_정답",
+          "answer_type": "다른_표현_정답",
+          "answer": "넘어질 수 있는 곳에 미리 깔아 두는 매트 같아요. 사용자가 나이 칸에 '스물'이라고 입력해서 int()로 바꾸다 실패해도, 프로그램이 꺼지지 않고 '숫자로 입력해 주세요'라고 다시 물을 수 있어요.",
+          "criteria": {
+            "A": true,
+            "B": true
+          },
+          "teacher": "pass",
+          "teacher_reason": "비유로 A·B 충족"
+        },
+        {
+          "answer_id": "E3-길지만_틀림",
+          "answer_type": "길지만_틀림",
+          "answer": "try/except는 파이썬의 예외 처리 문법입니다. try 블록 안에 실행할 코드를 쓰고, 그 아래 except 블록을 씁니다. except 뒤에는 예외 클래스 이름을 쓸 수 있고, as로 예외 객체에 이름을 붙일 수도 있습니다. else 블록은 예외가 없을 때, finally 블록은 예외와 상관없이 항상 실행됩니다. except를 여러 개 이어 쓸 수도 있고, raise로 예외를 직접 일으킬 수도 있습니다. 이런 구조를 잘 익혀 두면 깔끔한 코드를 쓸 수 있습니다.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "문법만 나열하고 쓰는 이유와 예가 없음(A·B 모두 미충족)"
+        },
+        {
+          "answer_id": "E3-A만_충족",
+          "answer_type": "A만_충족",
+          "answer": "실행 중에 예외가 나도 프로그램이 멈추지 않고 계속 실행되도록 처리하려고 씁니다.",
+          "criteria": {
+            "A": true,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "구체적인 예가 없음(B 미충족)"
+        },
+        {
+          "answer_id": "E3-오개념",
+          "answer_type": "오개념",
+          "answer": "try/except는 코드를 실행하기 전에 문법 오류를 미리 찾아 주는 기능입니다. 예를 들어 괄호를 닫지 않은 코드를 찾아 줍니다.",
+          "criteria": {
+            "A": false,
+            "B": false
+          },
+          "teacher": "fail",
+          "teacher_reason": "실행 전 문법 검사로 오해(A 오개념), 실행 중 예외가 아닌 문법 오류 예(B 미충족)"
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "pair_id": "PE1",
+      "item_id": "E1",
+      "purpose": "길이만 다름",
+      "a": "E1-모범_정답",
+      "b": "E1-짧은_정답",
+      "teacher_winner": "무승부"
+    },
+    {
+      "pair_id": "PE2",
+      "item_id": "E1",
+      "purpose": "긴 오답",
+      "a": "E1-길지만_틀림",
+      "b": "E1-짧은_정답",
+      "teacher_winner": "E1-짧은_정답"
+    },
+    {
+      "pair_id": "PE3",
+      "item_id": "E2",
+      "purpose": "길이만 다름",
+      "a": "E2-모범_정답",
+      "b": "E2-짧은_정답",
+      "teacher_winner": "무승부"
+    },
+    {
+      "pair_id": "PE4",
+      "item_id": "E2",
+      "purpose": "긴 오답",
+      "a": "E2-길지만_틀림",
+      "b": "E2-짧은_정답",
+      "teacher_winner": "E2-짧은_정답"
+    },
+    {
+      "pair_id": "PE5",
+      "item_id": "E3",
+      "purpose": "길이만 다름",
+      "a": "E3-모범_정답",
+      "b": "E3-짧은_정답",
+      "teacher_winner": "무승부"
+    },
+    {
+      "pair_id": "PE6",
+      "item_id": "E3",
+      "purpose": "긴 오답",
+      "a": "E3-길지만_틀림",
+      "b": "E3-짧은_정답",
+      "teacher_winner": "E3-짧은_정답"
+    }
+  ]
+}
