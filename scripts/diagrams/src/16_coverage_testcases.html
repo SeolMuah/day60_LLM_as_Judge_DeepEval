@@ -1,0 +1,82 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  /* 왼쪽: 평가 범위표 큰 카드 / 가운데: 화살표 / 오른쪽: 없는 유형(분홍) + 다음 단계(파랑) */
+  .main { flex: 1; min-height: 0; display: flex; gap: 18px; align-items: stretch; }
+  .tbl-card { flex: 1.32; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 20px 24px 22px; }
+  .card .pill { font-size: 21px; padding: 6px 24px; }
+  .tbl { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.55fr 1.05fr 0.8fr 1.15fr;
+    grid-template-rows: auto repeat(6, minmax(0, 1fr)); border-radius: 14px; overflow: hidden;
+    border: 2.5px solid var(--blue-bd); background: #fff; }
+  .tbl > div { display: flex; align-items: center; padding: 0 20px; font-size: 24px; font-weight: 600; color: var(--ink);
+    border-top: 1.5px solid #d9e4f5; white-space: nowrap; }
+  .tbl > .hd { background: #e6f0fd; border-top: none; font-size: 22px; font-weight: 800; color: var(--navy); padding: 12px 20px; }
+  .tbl > .ty { font-weight: 700; color: var(--navy); }
+  .tbl > .id { font-family: "Pretendard", sans-serif; font-weight: 700; color: var(--blue-ink); }
+  .tbl > .n, .tbl > .hd.n { justify-content: center; }
+  .tbl > .n:not(.hd) { font-size: 27px; font-weight: 800; color: var(--navy); }
+  .tbl > .st { justify-content: center; }
+  .tbl > .hd.st { justify-content: center; }
+  .tbl > .weak { background: #fffcf4; }
+  .badge { font-size: 21px; padding: 4px 18px; }
+  .ok { color: var(--green-ink); background: var(--green-bg); }
+  .more { color: var(--yellow-ink); background: #fdf0d2; border-color: var(--yellow-bd); }
+
+  .harrow { flex: none; align-self: center; }
+  .side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+  .side .card { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 24px 22px; }
+  .items { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+  .item { flex: 1; display: flex; align-items: center; padding: 0 22px; background: #fff; border-radius: 14px;
+    border: 2.5px dashed var(--pink-bd); font-size: 24px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .item .ex { font-weight: 500; color: var(--muted); font-size: 22px; }
+  .step { flex: 1; display: flex; align-items: center; gap: 14px; padding: 0 20px; background: #fff; border-radius: 14px;
+    border: 2.5px solid var(--blue-bd); font-size: 23px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .step .no { flex: none; color: var(--blue-ink); font-weight: 800; }
+  .note { font-size: 23px; padding: 16px 24px; }
+  .note .s { font-size: 21px; }
+</style></head>
+<body><div class="title">평가 범위표에서 빠진 질문을 찾습니다</div>
+<div class="subtitle">질문 유형마다 사례가 충분한지 보고, 1개 이하인 칸을 다음 평가 사례 후보로 삼습니다.</div>
+<div class="stage">
+  <div class="main">
+    <div class="card blue tbl-card">
+      <span><span class="pill blue">평가 범위표</span></span>
+      <div class="tbl">
+        <div class="hd">질문 유형</div><div class="hd">질문 ID</div><div class="hd n">질문 수</div><div class="hd st">상태</div>
+
+        <div class="ty">기대 행동</div><div class="id">Q1·Q3</div><div class="n">2</div><div class="st"><span class="badge ok">충분</span></div>
+
+        <div class="ty weak">설정 질문</div><div class="id weak">Q2</div><div class="n weak">1</div><div class="st weak"><span class="badge more">보강 후보</span></div>
+
+        <div class="ty weak">공지 정보 있음</div><div class="id weak">Q4</div><div class="n weak">1</div><div class="st weak"><span class="badge more">보강 후보</span></div>
+
+        <div class="ty">공지 정보 없음</div><div class="id">Q5·Q8</div><div class="n">2</div><div class="st"><span class="badge ok">충분</span></div>
+
+        <div class="ty weak">틀린 전제</div><div class="id weak">Q6</div><div class="n weak">1</div><div class="st weak"><span class="badge more">보강 후보</span></div>
+
+        <div class="ty weak">성별 언급</div><div class="id weak">Q7</div><div class="n weak">1</div><div class="st weak"><span class="badge more">보강 후보</span></div>
+      </div>
+    </div>
+    <svg class="harrow" width="66" height="70" viewBox="0 0 66 70">
+      <line x1="5" y1="35" x2="54" y2="35" stroke="#2f4a73" stroke-width="9" stroke-linecap="round"/>
+      <polyline points="32,10 58,35 32,60" fill="none" stroke="#2f4a73" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="side">
+      <div class="card pink">
+        <span><span class="pill pink">아직 없는 질문 유형</span></span>
+        <div class="items">
+          <div class="item">형식 지정&nbsp;<span class="ex">(예: 두 줄로 정리해 줘)</span></div>
+          <div class="item">공연 종료 시각&nbsp;<span class="ex">(L5: 공지에 없음)</span></div>
+        </div>
+      </div>
+      <div class="card blue">
+        <span><span class="pill blue">다음 단계</span></span>
+        <div class="items">
+          <div class="step"><span class="no">1)</span> 보강 후보·없는 유형에 질문 추가</div>
+          <div class="step"><span class="no">2)</span> 같은 변형 5종으로 답 작성</div>
+          <div class="step"><span class="no">3)</span> 사람 판정 후 같은 셀 다시 실행</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note">대표 사례 몇 개가 전체 서비스 품질을 보증하지 않습니다.<div class="s">실제 질문과 실패 사례로 계속 보완합니다.</div></div>
+</div></body></html>
