@@ -1,0 +1,182 @@
+[
+ {
+  "answer_id": "Q1-correct",
+  "question_id": "Q1",
+  "question": "2시간 타면 요금이 얼마인가요?",
+  "reference": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "kind": "correct",
+  "answer": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q1-wrong_fact",
+  "question_id": "Q1",
+  "question": "2시간 타면 요금이 얼마인가요?",
+  "reference": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "kind": "wrong_fact",
+  "answer": "3,000원입니다. 1시간이 지나면 30분마다 500원이 붙습니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q1-unsupported",
+  "question_id": "Q1",
+  "question": "2시간 타면 요금이 얼마인가요?",
+  "reference": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "kind": "unsupported",
+  "answer": "2,000원입니다. 처음 이용하시면 헬멧을 무료로 빌려 드립니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q1-padded",
+  "question_id": "Q1",
+  "question": "2시간 타면 요금이 얼마인가요?",
+  "reference": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "kind": "padded",
+  "answer": "문의해 주셔서 감사합니다. 요금을 자세히 안내해 드리겠습니다. 2시간을 이용하시면 요금은 2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙기 때문입니다. 다시 정리해 드리면, 2시간 이용 요금은 2,000원입니다. 즐거운 라이딩 되세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q1-rude",
+  "question_id": "Q1",
+  "question": "2시간 타면 요금이 얼마인가요?",
+  "reference": "2,000원입니다. 첫 1시간 1,000원에 30분마다 500원씩 두 번 붙습니다.",
+  "kind": "rude",
+  "answer": "2,000원이요. 요금표 한 번만 보시면 나오는 걸 왜 물어보세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q2-correct",
+  "question_id": "Q2",
+  "question": "빌린 대여소에 꼭 반납해야 하나요?",
+  "reference": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "kind": "correct",
+  "answer": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q2-wrong_fact",
+  "question_id": "Q2",
+  "question": "빌린 대여소에 꼭 반납해야 하나요?",
+  "reference": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "kind": "wrong_fact",
+  "answer": "네. 빌린 대여소에만 반납할 수 있습니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q2-unsupported",
+  "question_id": "Q2",
+  "question": "빌린 대여소에 꼭 반납해야 하나요?",
+  "reference": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "kind": "unsupported",
+  "answer": "아니요. 아무 대여소에나 반납할 수 있고, 다른 대여소에 반납하면 200원을 돌려받습니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q2-padded",
+  "question_id": "Q2",
+  "question": "빌린 대여소에 꼭 반납해야 하나요?",
+  "reference": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "kind": "padded",
+  "answer": "좋은 질문입니다. 반납 장소를 안내해 드리겠습니다. 빌린 대여소가 아니어도 아무 대여소에나 반납하시면 됩니다. 다시 말해 꼭 빌린 곳에 반납할 필요는 없습니다. 편하게 이용하세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q2-rude",
+  "question_id": "Q2",
+  "question": "빌린 대여소에 꼭 반납해야 하나요?",
+  "reference": "아니요. 아무 대여소에나 반납할 수 있습니다.",
+  "kind": "rude",
+  "answer": "아니요, 아무 데나 반납하세요. 같은 걸 몇 번이나 물어보시는 거예요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q3-correct",
+  "question_id": "Q3",
+  "question": "열두 살 아이가 혼자 빌릴 수 있나요?",
+  "reference": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "kind": "correct",
+  "answer": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q3-wrong_fact",
+  "question_id": "Q3",
+  "question": "열두 살 아이가 혼자 빌릴 수 있나요?",
+  "reference": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "kind": "wrong_fact",
+  "answer": "네. 만 10세부터 혼자 빌릴 수 있어서 열두 살이면 괜찮습니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q3-unsupported",
+  "question_id": "Q3",
+  "question": "열두 살 아이가 혼자 빌릴 수 있나요?",
+  "reference": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "kind": "unsupported",
+  "answer": "아니요. 만 13세 미만은 혼자 빌릴 수 없고, 보호자 동의서를 대여소에 내야 합니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q3-padded",
+  "question_id": "Q3",
+  "question": "열두 살 아이가 혼자 빌릴 수 있나요?",
+  "reference": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "kind": "padded",
+  "answer": "문의해 주셔서 감사합니다. 어린이 대여 기준을 안내해 드리겠습니다. 만 13세 미만은 혼자 빌릴 수 없고, 보호자와 함께 빌려야 합니다. 열두 살 아이라면 혼자서는 빌릴 수 없으니 보호자와 함께 빌려 주세요. 안전한 이용 되세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q3-rude",
+  "question_id": "Q3",
+  "question": "열두 살 아이가 혼자 빌릴 수 있나요?",
+  "reference": "아니요. 만 13세 미만은 혼자 빌릴 수 없고 보호자와 함께 빌려야 합니다.",
+  "kind": "rude",
+  "answer": "안 돼요. 그 정도는 좀 알아보고 물어보세요. 보호자랑 같이 빌리세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q4-correct",
+  "question_id": "Q4",
+  "question": "5시간 동안 빌릴 수 있나요?",
+  "reference": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "kind": "correct",
+  "answer": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q4-wrong_fact",
+  "question_id": "Q4",
+  "question": "5시간 동안 빌릴 수 있나요?",
+  "reference": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "kind": "wrong_fact",
+  "answer": "네. 한 번에 최대 6시간까지 빌릴 수 있습니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q4-unsupported",
+  "question_id": "Q4",
+  "question": "5시간 동안 빌릴 수 있나요?",
+  "reference": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "kind": "unsupported",
+  "answer": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다. 4시간 안에 반납하면 다음 대여 때 쓸 수 있는 포인트 100점을 드립니다.",
+  "human_label": "fail"
+ },
+ {
+  "answer_id": "Q4-padded",
+  "question_id": "Q4",
+  "question": "5시간 동안 빌릴 수 있나요?",
+  "reference": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "kind": "padded",
+  "answer": "문의해 주셔서 감사합니다. 대여 시간 기준을 안내해 드리겠습니다. 한 번에 최대 4시간까지 빌릴 수 있어서 5시간 대여는 어렵습니다. 다시 말씀드리면, 한 번에 빌릴 수 있는 시간은 최대 4시간입니다. 즐거운 라이딩 되세요.",
+  "human_label": "pass"
+ },
+ {
+  "answer_id": "Q4-rude",
+  "question_id": "Q4",
+  "question": "5시간 동안 빌릴 수 있나요?",
+  "reference": "아니요. 한 번에 최대 4시간까지 빌릴 수 있습니다.",
+  "kind": "rude",
+  "answer": "아니요. 최대 4시간이라고 써 있잖아요.",
+  "human_label": "pass"
+ }
+]

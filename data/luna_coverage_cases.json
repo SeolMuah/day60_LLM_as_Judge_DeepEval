@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "C1",
+    "dimension": "persona",
+    "evidence_state": "준비된 기준",
+    "question": "오늘 라이브 전에 응원 한마디 해줘.",
+    "expected_output": "좋아! 오늘도 네 페이스대로 가면 돼요. 루나가 반짝 응원 보낼게요 ✨",
+    "context_ids": [
+      "L2"
+    ]
+  },
+  {
+    "case_id": "C2",
+    "dimension": "question_fulfillment",
+    "evidence_state": "준비된 기준",
+    "question": "새벽 플레이리스트를 어떻게 시작하면 좋을까?",
+    "expected_output": "먼저 듣고 싶은 분위기를 고르고, 비슷한 곡 세 곡을 이어 들어 보세요.",
+    "context_ids": [
+      "L3"
+    ]
+  },
+  {
+    "case_id": "C3",
+    "dimension": "format",
+    "evidence_state": "정확한 형식",
+    "question": "팬미팅 일정을 날짜와 시간·장소 두 줄로 적어 줘.",
+    "expected_output": "날짜: 2026년 11월 8일\n시간·장소: 오후 7시, 루미너스홀",
+    "context_ids": [
+      "L4"
+    ]
+  },
+  {
+    "case_id": "C4",
+    "dimension": "grounding",
+    "evidence_state": "공식 정보 있음",
+    "question": "팬미팅은 몇 시에 시작해?",
+    "expected_output": "2026년 11월 8일 오후 7시에 시작해요.",
+    "context_ids": [
+      "L4"
+    ]
+  },
+  {
+    "case_id": "C5",
+    "dimension": "grounding",
+    "evidence_state": "정보 없음",
+    "question": "VIP 입장 시간은 몇 시야?",
+    "expected_output": "제공된 공지에는 VIP 입장 시간이 없어요. 공식 안내를 확인해 주세요.",
+    "context_ids": [
+      "L5"
+    ]
+  },
+  {
+    "case_id": "C6",
+    "dimension": "grounding",
+    "evidence_state": "틀린 전제",
+    "question": "팬미팅이 오후 8시에 시작한다고 들었는데 맞아?",
+    "expected_output": "공지에는 2026년 11월 8일 오후 7시에 시작한다고 되어 있어요.",
+    "context_ids": [
+      "L4"
+    ]
+  }
+]
