@@ -6,12 +6,12 @@
 
 | 교안 | 배울 내용 | 본 실습 | 함께 따라하기 |
 |---|---|---|---|
-| [01 · LLM-as-Judge: 판사와 편향](교안_01_LLM_as_Judge_판사와_편향.ipynb) | 판사 프롬프트 설계, Direct Scoring(pass·fail, 1~5점 점수별 기준, 기준 답변), Pairwise와 무승부, 위치·장황함·권위 효과 확인, 순서를 바꿔 두 번 묻기, 사람 판정과 대조(일치율·실패 탐지율·정상 통과율·kappa) | 루나 답변 22개를 5개 평가 축으로 채점 | 굿즈 스토어 상담 v1·v2를 정책 기준으로 비교하고 배포 여부 판단 |
-| [02 · DeepEval: 지표와 테스트 케이스](교안_02_DeepEval_지표와_테스트_케이스.ipynb) | `LLMTestCase`, G-Eval(판단 단계·기준 답변·rubric), ArenaGEval, Hallucination, Toxicity·Bias, 형식 코드 검사, 평가 축별 판사 점검, 평가 범위표, `evaluate()` 결과 읽기 | 루나 사례를 지표로 평가하고 사람 판정과 대조 | 굿즈 스토어 상담 답변을 정책 준수 G-Eval로 평가 |
+| [01 · LLM-as-Judge: 판사와 편향](교안_01_LLM_as_Judge_판사와_편향.ipynb) | 판사 프롬프트 설계, Direct Scoring(pass·fail), Pairwise와 무승부, 위치·장황함·권위 효과 확인, 양방향 판정, 사람 판정과 대조한 판사 성적표(일치율·실패 탐지율·정상 통과율·kappa), 놓친 실패·헛경보 읽기 | 루나 답변 40개를 평가 축 3개(페르소나·정확성·안전)로 채점(판사 호출 120번)하고 10쌍을 두 순서로 비교 | 굿즈 스토어 상담 v1·v2를 정책 기준으로 채점·비교하고 배포 여부 판단 |
+| [02 · DeepEval: 지표와 테스트 케이스](교안_02_DeepEval_지표와_테스트_케이스.ipynb) | `LLMTestCase`, G-Eval(판단 단계·기준 답변·rubric), ArenaGEval, Hallucination, Toxicity·Bias, `evaluate()` 결과 읽기, 결함과 걸리는 방법 짝짓기, 평가 범위표 | 같은 평가셋 40개를 축별 지표로 평가하고 사람 판정·교안 01 판사와 성적표로 대조 | 정책 기준을 G-Eval로 옮겨 기록 16답으로 검증하고, 새 질문 6개의 답을 평가해 배포 여부 판단 |
 
-두 교안은 같은 순서로 구성됩니다. 첫 부분에는 오늘 배울 내용과 학습 목표만 두고, **2절 실습 준비**에서 실습 대상(루나)과 모델·자료를 소개합니다.
+두 교안은 같은 순서로 구성됩니다. 첫 부분에는 오늘 배울 내용과 학습 목표만 두고, **2절 실습 준비**에서 실습 대상(루나)과 모델·자료를 소개합니다. 두 교안은 같은 평가셋, 같은 `answer_id`, 같은 기준 문장(`axes`)을 씁니다.
 
-교안마다 맨 아래 **함께 따라하기**가 있습니다. 학생본에서 `✏️ 직접 설계`·`✏️ 부분 작성` 표시가 있는 셀의 `...` 자리를 채운 뒤 실행합니다. 완성 코드는 `정답/`에 있습니다.
+교안마다 맨 아래 **함께 따라하기**가 있습니다. 학생본에서 `✏️ 부분 작성` 표시가 있는 셀의 `...` 자리를 채운 뒤 실행합니다. 완성 코드는 `정답/`에 있습니다.
 
 ## 폴더 구조
 
@@ -21,24 +21,39 @@ day60_LLM_as_Judge_DeepEval/
 ├── 교안_02_DeepEval_지표와_테스트_케이스.ipynb
 ├── 정답/                교안 정답 노트북(함께 따라하기 완성본)
 ├── .env.example         API 키·모델 설정 예시(비밀 키 없음)
-├── data/                실습 자료(아래 표)
+├── data/
+│   ├── 본실습/          루나 설정·공지와 평가셋
+│   └── 따라하기/        굿즈 스토어 정책과 평가셋
 ├── images/              개념 그림
-└── scripts/             이미지 생성 기록
+├── results/             실행할 때 생기는 판사 결과 CSV(git에 올리지 않음)
+└── scripts/             평가셋 검사 스크립트, 그림 원본과 생성 기록
 ```
 
 ### 교안에서 쓰는 자료
 
+평가셋의 답변은 모두 **사람이 쓴 통제 입력**입니다. 모델이 만든 답이 아니라, 정상 답에서 한 곳만 바꿔 어느 축에 걸려야 하는지 정해 둔 답입니다.
+
 | 자료 | 내용 | 쓰는 곳 |
 |---|---|---|
-| `data/luna_guide.json` | 루나 설정과 가상 팬미팅 공지 문장 8개(L1~L8), 판정에 쓸 정보의 범위 | 01·02 |
-| `data/luna_answers.json` | 질문 4개(Q1~Q4)에 대한 답변 22개. 평가 축(`dimension`), 사람 판정(pass 12·fail 10), 이유, 기준 답변 | 01 |
-| `data/luna_pairwise_cases.json` | 두 답 비교 사례 6건(LP01~LP06). 사람 선호와 각 답의 사람 판정 | 01, 02(LP04) |
-| `data/luna_metric_cases.json` | 주된 결함을 하나씩 심은 지표 연습 사례 8건 | 02 |
-| `data/luna_eval_cases.json` | 페르소나 3·질문 충족 3·형식 2·근거성 3·존중 표현 2·편향 2 = 15건과 사람 판정(pass 7·fail 8) | 02 |
-| `data/luna_coverage_cases.json` | 평가 축과 근거 상태(준비된 기준·정확한 형식·공식 정보 있음·정보 없음·틀린 전제)를 조합한 새 질문 6건 | 02 |
-| `data/store_policies.json` | 굿즈 스토어 가상 정책 5개(P1~P5: 단순 변심, 파손·오배송, 랜덤 포토카드, 주문 제작, 주문 확인·환불 시점) | 01·02 |
-| `data/store_chatbot_log.json` | 상담 질문 8건(S01~S08)의 v1·v2 답변 16개, 사람 판정, 검토 이유, 상대 선호(`human_better`), 필수 안내(`required_points`) | 01·02 |
-| `data/store_coverage_cases.json` | 답을 새로 만들어 평가할 상담 질문 6건(T1~T6)과 기준 답변 | 02 |
+| `data/본실습/luna_guide.json` | 루나 설정과 가상 팬미팅 공지 문장 8개(L1–L8), 판정에 쓸 정보의 범위(`evidence_scope`) | 01·02 |
+| `data/본실습/luna_golden_set.json` | 루나 평가셋. 평가 축 3개의 기준 문장(`axes`), 질문 8개 × 답변 변형 5개 = 답변 40개, 축별 사람 판정 120칸과 이유, 질문마다 기준 답변, 두 답 비교 10쌍과 사람 승자 | 01·02 |
+| `data/따라하기/store_policies.json` | 굿즈 스토어 가상 정책 5개(P1–P5: 단순 변심, 파손·오배송, 랜덤 포토카드, 주문 제작, 주문 확인·환불 시점) | 01·02 |
+| `data/따라하기/store_golden_set.json` | 스토어 평가셋. 정책 축 기준 문장(`axes.정책`), 상담 기록 S01–S08의 v1·v2 답 16개와 사람 판정, 쌍 8개와 사람 승자, 답을 새로 만들어 평가할 질문 T1–T6 | 01·02 |
+
+강사는 평가셋을 고친 뒤 `python scripts/check_golden_set.py`로 API 없이 검사합니다(축별 fail 수, 쌍 승자와 라벨 규칙, 기준 답변과 같은 답 등). 문제가 없으면 "통과: 문제 0건"이 출력됩니다.
+
+### 실행 결과(`results/`)
+
+교안을 실행하면 `results/`에 판사 결과 CSV가 생깁니다. 모든 CSV에 판사 모델 열이 있습니다.
+
+| 파일 | 만드는 곳 | 읽는 곳 |
+|---|---|---|
+| `lesson01_luna_direct.csv` | 교안 01 Direct Scoring(120행) | 교안 02 성적표 비교 |
+| `lesson01_luna_pairwise.csv` | 교안 01 Pairwise·양방향 판정(10행) | 교안 02 ArenaGEval |
+| `lesson01_store_direct.csv` | 교안 01 함께 따라하기(16행) | 교안 02 함께 따라하기 기록 검증 |
+| `lesson02_luna_deepeval.csv` | 교안 02 세 축 판정(96행) | 없음(기록용) |
+
+교안 01 결과 CSV가 없으면 교안 02는 교안 01을 먼저 실행하라는 안내를 한 줄 출력하고 DeepEval 결과만 보여 줍니다.
 
 ### 현재 교안에서 쓰지 않는 자료
 
@@ -48,7 +63,7 @@ day60_LLM_as_Judge_DeepEval/
 |---|---|
 | `data/bike_guide.json`, `data/bike_answers.json`, `data/bike_cases.json` | 수업용 가상 공공자전거 안내 문장, 답변과 사람 판정, 결함 사례 |
 | `data/drug_docs.json`, `data/drug_chatbot_log.json` | 일반의약품 6종 문서(출처: 식품의약품안전처 의약품개요정보(e약은요), 공공데이터포털)와 복약 안내 챗봇 응답 |
-| `images/00_lesson01_scope.png`, `images/15_opinion_metrics.png`, `images/02_direct_pairwise_reference.svg` | 현재 교안에 넣지 않은 그림과 원본 벡터 파일 |
+| `images/02_direct_pairwise_reference.svg` | 그림 02의 원본 벡터 파일 |
 
 ## 준비
 
@@ -61,7 +76,17 @@ day60_LLM_as_Judge_DeepEval/
 
 **점수 방향 주의:** DeepEval 4.1.1에서 Hallucination·Toxicity·Bias는 **낮을수록 좋은** 점수입니다. 이 설명은 uv.lock에 고정된 버전과 [4.1.1 Hallucination 구현](https://github.com/confident-ai/deepeval/blob/v4.1.1/deepeval/metrics/hallucination/hallucination.py)에 맞췄습니다. 다른 버전의 온라인 문서·코드에서는 점수 방향과 세부 동작이 달라질 수 있으므로 설치 버전을 먼저 확인합니다.
 
-판사 모델의 판정과 점수는 실행마다 달라질 수 있습니다. 교안의 "확인할 점"은 숫자 대신 어떤 출력 줄을 무엇과 비교하는지로 적었습니다.
+**빠른 모드:** 두 교안의 준비 셀에 있는 `RUN_QIDS = None`을 `["Q1", "Q3", "Q5", "Q7"]`로 바꾸면 루나 답변 20개만 평가합니다. 교안 01 Direct Scoring은 판사 호출 120번이 60번으로 줄고, 쌍 비교와 함께 따라하기는 그대로입니다. 429 오류가 나면 코드의 동시 실행 수(`max_concurrency`·`max_concurrent`)를 8에서 4로 낮춥니다.
+
+판사 모델의 판정과 점수는 실행마다 달라질 수 있습니다. 그래서 교안은 결과를 미리 단정하지 않고, 결과 뒤에 조건형 읽기('…라면 …입니다')와 접는 질문을 두었습니다.
+
+### 강사 리허설 체크리스트
+
+수업 전에 실제 API 키로 두 교안을 한 번 실행하고 다음 세 가지를 확인합니다.
+
+1. 교안 01 Direct Scoring에서 축별로 사람 판정과 다른 칸 수
+2. 교안 01 Pairwise에서 무승부 4쌍(PR01–PR04)의 판정
+3. 교안 02 Hallucination 16개 표에서 `Q5-정보_오류`의 점수
 
 ## 용어
 
@@ -69,12 +94,14 @@ day60_LLM_as_Judge_DeepEval/
 
 | 용어 | 뜻 | 데이터·코드 이름 |
 |---|---|---|
-| 평가 축 | 답변을 볼 관점 하나(페르소나, 질문 충족도, 근거성, 형식, 존중 표현, 편향, 정책 준수) | `dimension` |
-| 사람 판정 | 사람이 미리 매긴 pass·fail | `human_label`, `label_v1` 등 |
-| 판사 판정 | 판사 모델(또는 코드 검사)이 낸 pass·fail | 표의 `판사 판정` 열 |
-| 기준 답변 | 사람이 확인한 모범 답 문장 또는 기대 행동 설명 | `reference`, `expected_output` |
-| 사람 선호 | 두 답 중 사람이 더 낫다고 본 쪽 | `human_winner`, `human_better` |
-| 판사 성적표 | 일치율·실패 탐지율·정상 통과율·kappa | `summarize_judge_results()` |
+| 평가셋 | 사람이 미리 확인한 질문·답변·사람 판정·기준 답변 묶음 | `luna_golden_set.json`, `store_golden_set.json` |
+| 평가 축 | 답변을 볼 관점 하나. 루나는 페르소나·정확성·안전 3개, 함께 따라하기는 정책 1개 | `axes`(축마다 `criterion`·`steps`·`fail_tags`·`allowed`) |
+| 사람 판정 | 사람이 미리 매긴 pass·fail | `labels`, `label_v1`·`label_v2` |
+| 판사 판정 | 판사 모델(또는 DeepEval 지표)이 낸 pass·fail | 표의 `판사` 열 |
+| 기준 답변 | 사람이 확인한 모범 답 문장 | `expected_output`(루나), `reference`(스토어) |
+| 사람 승자 | 두 답 중 사람이 더 낫다고 본 답의 ID 또는 무승부 | `human_winner`, `human_better` |
+| 판사 성적표 | 일치율·실패 탐지율·정상 통과율·kappa | `scorecard()` |
+| 놓친 실패·헛경보 | 사람 fail을 판사가 pass로 본 칸 · 사람 pass를 판사가 fail로 본 칸 | 성적표 아래 표의 `구분` 열 |
 
 ## RAGAS와 LLM-as-Judge·DeepEval의 관계와 실무 적용
 
