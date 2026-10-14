@@ -1,0 +1,129 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  .stage { padding: 24px 60px 24px; }
+  .pill { font-size: 21px; padding: 7px 26px; }
+  .main { flex: 1; gap: 0; align-items: stretch; }
+  .left { flex: 0 0 840px; gap: 22px; }
+  .gapcol { flex: 0 0 104px; }
+  .right { flex: 1; gap: 0; }
+
+  /* 요청 카드 */
+  .req { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 18px 24px 22px; }
+  .req-body { flex: 1; display: flex; gap: 16px; align-items: stretch; }
+  .slot { flex: 1; display: flex; flex-direction: column; gap: 10px; background: #fff; border: 2.5px dashed var(--gray-bd);
+    border-radius: 18px; padding: 12px 14px 14px; }
+  .slot-tag { align-self: flex-start; background: var(--navy); color: #fff; font-size: 21px; font-weight: 800;
+    padding: 4px 16px; border-radius: 10px; letter-spacing: 0.5px; }
+  .ans { flex: 1; border-radius: 16px; border: 2.5px solid; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .ans.blue { background: var(--blue-bg); border-color: var(--blue-bd); }
+  .ans.yellow { background: var(--yellow-bg); border-color: var(--yellow-bd); }
+  .ans-name { font-size: 32px; font-weight: 800; }
+  .ans.blue .ans-name { color: var(--blue-ink); }
+  .ans.yellow .ans-name { color: var(--yellow-ink); }
+  .bar { height: 11px; border-radius: 6px; }
+  .ans.blue .bar { background: #cfdff5; }
+  .ans.yellow .bar { background: #f3dfae; }
+  .req-body .arrow { width: 54px; }
+  .judge { flex: 0 0 168px; background: #fff; border: 2.5px solid var(--gray-bd); border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .judge-label { font-size: 22px; font-weight: 700; color: var(--muted); }
+  .win { font-size: 30px; padding: 6px 22px; color: var(--navy); border-width: 3px; }
+
+  /* 되돌리기 표 */
+  .tbl { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 18px 24px 22px; }
+  .trow { flex: 1; background: #fff; border: 2.5px solid #b9dcc6; border-radius: 18px; padding: 14px 22px;
+    display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+  .trow-name { font-size: 28px; font-weight: 800; color: var(--navy); text-align: center; }
+  .conv { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .conv .badge { font-size: 30px; padding: 6px 22px; }
+  .conv .arrow { width: 64px; }
+  .res { font-size: 31px; font-weight: 800; padding: 8px 28px; border-radius: 999px; border: 2.5px solid; }
+  .res.blue { background: #e6f0fd; border-color: var(--blue-bd); color: var(--blue-ink); }
+  .res.yellow { background: #fdf0d2; border-color: var(--yellow-bd); color: var(--yellow-ink); }
+
+  .vdown { flex: 0 0 52px; display: flex; justify-content: center; }
+
+  /* 결론 상자 */
+  .concl { background: #fff4e3; border: 2.5px solid #e9ac5c; border-radius: 20px; padding: 20px 22px; text-align: center;
+    box-shadow: 0 3px 8px rgba(29, 43, 69, 0.06); }
+  .concl-main { font-size: 29px; font-weight: 800; color: var(--navy); }
+  .concl-main .hl { color: #b25d0a; }
+  .concl-sub { margin-top: 8px; font-size: 21px; font-weight: 500; color: var(--muted); }
+
+  #wires { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; pointer-events: none; overflow: visible; }
+</style></head>
+<body>
+<div class="title">순서를 바꿔 두 번 묻고 원래 이름으로 되돌리기</div>
+<div class="subtitle">같은 질문의 두 답 자리를 바꿔 두 번 요청하고, 원래 이름으로 되돌려 승자가 바뀌는지 확인합니다.</div>
+<div class="stage">
+  <div class="row main">
+    <div class="col left">
+      <div class="card purple req" id="req1">
+        <span><span class="pill purple">첫 번째 요청</span></span>
+        <div class="req-body">
+          <div class="slot"><div class="slot-tag">자리 A</div>
+            <div class="ans blue"><div class="ans-name">답 1</div><div class="bar" style="width:100%"></div><div class="bar" style="width:82%"></div><div class="bar" style="width:58%"></div></div></div>
+          <div class="slot"><div class="slot-tag">자리 B</div>
+            <div class="ans yellow"><div class="ans-name">답 2</div><div class="bar" style="width:100%"></div><div class="bar" style="width:82%"></div><div class="bar" style="width:58%"></div></div></div>
+          <div class="arrow"></div>
+          <div class="judge"><div class="judge-label">판사 판정</div><span class="badge win">A 승</span></div>
+        </div>
+      </div>
+      <div class="card purple req" id="req2">
+        <span><span class="pill purple">두 번째 요청</span></span>
+        <div class="req-body">
+          <div class="slot"><div class="slot-tag">자리 A</div>
+            <div class="ans yellow"><div class="ans-name">답 2</div><div class="bar" style="width:100%"></div><div class="bar" style="width:82%"></div><div class="bar" style="width:58%"></div></div></div>
+          <div class="slot"><div class="slot-tag">자리 B</div>
+            <div class="ans blue"><div class="ans-name">답 1</div><div class="bar" style="width:100%"></div><div class="bar" style="width:82%"></div><div class="bar" style="width:58%"></div></div></div>
+          <div class="arrow"></div>
+          <div class="judge"><div class="judge-label">판사 판정</div><span class="badge win">A 승</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="gapcol"></div>
+    <div class="col right">
+      <div class="card green tbl" id="tbl">
+        <span><span class="pill green">원래 이름으로 되돌리기</span></span>
+        <div class="trow" id="row1"><div class="trow-name">첫 번째 요청</div>
+          <div class="conv"><span class="badge win">A 승</span><div class="arrow"></div><span class="res blue">답 1 승</span></div></div>
+        <div class="trow" id="row2"><div class="trow-name">두 번째 요청</div>
+          <div class="conv"><span class="badge win">A 승</span><div class="arrow"></div><span class="res yellow">답 2 승</span></div></div>
+      </div>
+      <div class="vdown"><svg width="40" height="52" viewBox="0 0 40 52"><line x1="20" y1="4" x2="20" y2="44" stroke="#2f4a73" stroke-width="4" stroke-linecap="round"/><polyline points="9,33 20,46 31,33" fill="none" stroke="#2f4a73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="concl">
+        <div class="concl-main">승자가 바뀜 → <span class="hl">위치 효과 신호</span></div>
+        <div class="concl-sub">6-1에서는 이런 경우 무승부로 처리</div>
+      </div>
+    </div>
+  </div>
+</div>
+<svg id="wires"></svg>
+<script>
+function draw() {
+  const svg = document.getElementById('wires');
+  const tbl = document.getElementById('tbl').getBoundingClientRect();
+  let out = '';
+  [['req1', 'row1'], ['req2', 'row2']].forEach(([r, w]) => {
+    const a = document.getElementById(r).getBoundingClientRect();
+    const b = document.getElementById(w).getBoundingClientRect();
+    const x0 = a.right + 8, y0 = a.top + a.height / 2;
+    const x1 = tbl.left - 6;
+    const y1 = (y0 > b.top + 30 && y0 < b.bottom - 30) ? y0 : b.top + b.height / 2;
+    const xm = (x0 + x1) / 2 - 6;
+    const rr = 12, dir = y1 > y0 ? 1 : -1;
+    let d;
+    if (Math.abs(y1 - y0) < 2 * rr + 2) { d = `M${x0},${y0} H${x1 - 4}`; }
+    else {
+      d = `M${x0},${y0} H${xm - rr} Q${xm},${y0} ${xm},${y0 + dir * rr} V${y1 - dir * rr} Q${xm},${y1} ${xm + rr},${y1} H${x1 - 4}`;
+    }
+    out += `<path d="${d}" fill="none" stroke="#2f4a73" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+    out += `<polyline points="${x1 - 14},${y1 - 12} ${x1},${y1} ${x1 - 14},${y1 + 12}" fill="none" stroke="#2f4a73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  svg.innerHTML = out;
+}
+draw();
+document.fonts.ready.then(draw);
+window.addEventListener('load', draw);
+</script>
+</body></html>

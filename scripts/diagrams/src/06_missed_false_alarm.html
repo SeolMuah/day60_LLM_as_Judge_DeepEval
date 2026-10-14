@@ -1,0 +1,102 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  .stage { padding: 24px 60px 26px; gap: 22px; }
+  .main { flex: 1; min-height: 0; gap: 22px; }
+
+  /* 2x2 표 */
+  .matrix { flex: 1; min-width: 0; display: grid; grid-template-columns: 210px 1fr 1fr; grid-template-rows: 82px 1fr 1fr; gap: 16px; }
+  .hd { border-radius: 18px; border: 2.5px solid; display: flex; align-items: center; justify-content: center; gap: 14px;
+    font-size: 25px; font-weight: 800; color: var(--navy); }
+  .hd.judge { background: var(--blue-bg); border-color: var(--blue-bd); }
+  .hd.human { background: var(--purple-bg); border-color: var(--purple-bd); flex-direction: column; gap: 14px; }
+  .hd .badge { font-size: 23px; padding: 3px 18px; }
+
+  .cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 18px; position: relative; }
+  .cell .lb { font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
+  .cell.green .lb { color: var(--green-ink); }
+  .cell.yellow .lb { color: var(--yellow-ink); }
+  .cell.pink .lb { color: var(--pink-ink); }
+  .cell svg { display: block; }
+  .cell.pink.danger { border: 4.5px solid #d65b7c; box-shadow: 0 0 0 6px rgba(214, 91, 124, 0.14), 0 6px 14px rgba(179, 59, 90, 0.16); }
+  .danger-pill { display: inline-block; padding: 6px 22px; border-radius: 999px; font-size: 21px; font-weight: 800;
+    color: #fff; background: var(--pink-ink); }
+
+  /* 행마다 화살표: 표의 행 높이에 맞춤 */
+  .arrows { width: 70px; flex: none; display: grid; grid-template-rows: 82px 1fr 1fr; gap: 16px; }
+  .aslot { display: flex; align-items: center; justify-content: center; }
+  /* 오른쪽 공식 상자 */
+  .formulas { width: 520px; flex: none; gap: 20px; }
+  .fcard { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 18px 22px; }
+  .fname { font-size: 34px; font-weight: 800; color: var(--navy); }
+  .feq { display: flex; align-items: center; gap: 12px; font-size: 26px; font-weight: 800; color: var(--navy); white-space: nowrap; }
+  .op { font-size: 30px; font-weight: 800; color: var(--navy); }
+  .chip { display: inline-block; padding: 6px 16px; border-radius: 12px; font-size: 26px; font-weight: 800; }
+  .chip.num { background: #e3f3e8; border: 2.5px solid var(--green-bd); color: var(--green-ink); }
+  .chip.den { background: #fff; border: 3px dashed var(--arrow); color: var(--navy); }
+
+  /* 공식 상자 속 작은 2x2: 분자 칸은 색, 분모 줄은 점선 */
+  .mini { display: flex; flex-direction: column; gap: 6px; }
+  .mrow { display: flex; gap: 8px; padding: 5px; border: 3px dashed transparent; border-radius: 14px; }
+  .mrow.den { border-color: var(--arrow); }
+  .mc { width: 86px; height: 44px; border-radius: 9px; border: 2.5px solid var(--gray-bd); background: var(--gray-bg); }
+  .mc.on { background: #cfead9; border-color: var(--green-ink); }
+
+  .note { font-size: 27px; padding: 18px 24px; }
+  .note .g { color: var(--green-ink); }
+  .note .warn { color: var(--pink-ink); }
+</style></head>
+<body><div class="title">사람 판정과 판사 판정 맞춰 보기</div>
+<div class="subtitle">네 칸으로 나누면 놓친 실패와 헛경보가 보입니다.</div>
+<div class="stage">
+  <div class="row main">
+    <div class="matrix">
+      <div></div>
+      <div class="hd judge">판사 판정 <span class="badge pass">pass</span></div>
+      <div class="hd judge">판사 판정 <span class="badge fail">fail</span></div>
+
+      <div class="hd human">사람 판정 <span class="badge pass">pass</span></div>
+      <div class="card green cell">
+        <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="31" fill="#fff" stroke="#2f7d4f" stroke-width="4.5"/><polyline points="20,36 31,47 51,24" fill="none" stroke="#2f7d4f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="lb">맞게 통과</div>
+      </div>
+      <div class="card yellow cell">
+        <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="31" fill="#fff" stroke="#8a6200" stroke-width="4.5"/><line x1="35" y1="17" x2="35" y2="40" stroke="#8a6200" stroke-width="7" stroke-linecap="round"/><circle cx="35" cy="52" r="4.5" fill="#8a6200"/></svg>
+        <div class="lb">헛경보</div>
+      </div>
+
+      <div class="hd human">사람 판정 <span class="badge fail">fail</span></div>
+      <div class="card pink cell danger">
+        <span class="danger-pill">가장 위험</span>
+        <svg width="76" height="68" viewBox="0 0 76 68"><path d="M38 5 L72 63 L4 63 Z" fill="#fff" stroke="#b33b5a" stroke-width="5" stroke-linejoin="round"/><line x1="38" y1="25" x2="38" y2="44" stroke="#b33b5a" stroke-width="7" stroke-linecap="round"/><circle cx="38" cy="54" r="4.5" fill="#b33b5a"/></svg>
+        <div class="lb">놓친 실패</div>
+      </div>
+      <div class="card green cell">
+        <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="31" fill="#fff" stroke="#2f7d4f" stroke-width="4.5"/><polyline points="20,36 31,47 51,24" fill="none" stroke="#2f7d4f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="lb">맞게 잡음</div>
+      </div>
+    </div>
+
+    <div class="arrows"><div></div><div class="aslot"><div class="arrow"></div></div><div class="aslot"><div class="arrow"></div></div></div>
+
+    <div class="col formulas">
+      <div class="card blue fcard">
+        <div class="fname">정상 통과율</div>
+        <div class="feq"><span class="op">=</span><span class="chip num">맞게 통과</span><span class="op">÷</span><span class="chip den">사람 pass 수</span></div>
+        <div class="mini">
+          <div class="mrow den"><div class="mc on"></div><div class="mc"></div></div>
+          <div class="mrow"><div class="mc"></div><div class="mc"></div></div>
+        </div>
+      </div>
+      <div class="card blue fcard">
+        <div class="fname">실패 탐지율</div>
+        <div class="feq"><span class="op">=</span><span class="chip num">맞게 잡음</span><span class="op">÷</span><span class="chip den">사람 fail 수</span></div>
+        <div class="mini">
+          <div class="mrow"><div class="mc"></div><div class="mc"></div></div>
+          <div class="mrow den"><div class="mc"></div><div class="mc on"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">일치율 = (<span class="g">맞게 통과</span> + <span class="g">맞게 잡음</span>) ÷ 전체 — <span class="warn">일치율 하나만 보지 않기</span></div>
+</div></body></html>

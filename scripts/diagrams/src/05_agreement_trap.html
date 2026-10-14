@@ -1,0 +1,105 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  :root { --red: #d1385c; }
+  .stage { padding: 20px 60px 24px; gap: 18px; }
+  .main { flex: 1; min-height: 0; display: flex; gap: 18px; align-items: stretch; }
+  .main > .arrow { width: 56px; }
+  .panel { display: flex; flex-direction: column; gap: 14px; padding: 20px 20px 18px; min-width: 0; }
+  .panel.human { flex: 0 0 440px; }
+  .panel.judge { flex: 0 0 490px; }
+  .pill { font-size: 20px; padding: 6px 24px; }
+
+  /* 사례 카드 격자 2열 x 5행 */
+  .grid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 12px; }
+  .case { border-radius: 14px; border: 2.5px solid; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px 0 16px; background: #fff; white-space: nowrap; min-height: 0; }
+  .case.ok { background: var(--green-bg); border-color: var(--green-bd); }
+  .case.ng { background: var(--pink-bg); border-color: var(--pink-bd); }
+  .case .no { font-size: 22px; font-weight: 700; color: var(--ink); }
+  .case .badge { font-size: 21px; padding: 2px 14px; }
+
+  /* 판사 도장 */
+  .stamp { display: inline-block; font-size: 22px; font-weight: 800; color: var(--green-ink); letter-spacing: 0.5px;
+    padding: 2px 12px; border: 3px solid var(--green-ink); border-radius: 9px; background: rgba(255,255,255,0.85);
+    box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 3.5px rgba(47,125,79,0.55); transform: rotate(-9deg); }
+
+  /* 놓친 실패 강조 */
+  .case.miss { border: 4px solid var(--red); background: var(--pink-bg); box-shadow: 0 0 0 4px rgba(209,56,92,0.16);
+    padding: 0 8px 0 12px; }
+  .case.miss .left { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .case.miss .no { font-size: 21px; line-height: 1.1; }
+  .misstag { font-size: 19px; font-weight: 800; color: #fff; background: var(--red); border-radius: 999px; padding: 1px 11px; line-height: 1.3; white-space: nowrap; }
+
+  .foot { flex: none; text-align: center; font-size: 27px; font-weight: 800; color: var(--navy); }
+  .foot .p { color: var(--green-ink); } .foot .f { color: var(--pink-ink); }
+
+  /* 오른쪽 지표 */
+  .metrics { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .metric { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 28px 0 28px; }
+  .metric .name { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .metric .h { font-size: 29px; }
+  .metric .val { font-size: 68px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+  .metric.green .val { color: var(--green-ink); }
+  .metric.pink .val { color: var(--pink-ink); }
+  .metric.alert { border: 4px solid var(--red); box-shadow: 0 0 0 5px rgba(209,56,92,0.14); }
+  .metric.alert .val { color: var(--red); font-size: 76px; }
+  .good { font-size: 20px; font-weight: 800; color: var(--green-ink); background: #e3f3e8; border: 2px solid var(--green-bd);
+    border-radius: 999px; padding: 3px 16px; }
+
+  .note { padding: 18px 24px; font-size: 27px; }
+</style></head>
+<body>
+<div class="title">일치율만 보면 속는다: 늘 pass만 주는 판사</div>
+<div class="subtitle">pass가 많은 자료에서는 늘 pass만 주는 판사도 일치율이 높지만 fail을 하나도 찾지 못합니다.</div>
+<div class="stage">
+  <div class="main">
+    <!-- 왼쪽: 사람 판정 -->
+    <div class="card blue panel human">
+      <span><span class="pill blue">사람 판정</span></span>
+      <div class="grid" id="human"></div>
+      <div class="foot"><span class="p">pass 9장</span> · <span class="f">fail 1장</span></div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 가운데: 늘 pass 판사 -->
+    <div class="card purple panel judge">
+      <span><span class="pill purple">늘 pass 판사</span></span>
+      <div class="grid" id="judge"></div>
+      <div class="foot">판사 판정 <span class="p">pass 10장</span></div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 오른쪽: 지표 -->
+    <div class="metrics">
+      <div class="card green metric">
+        <div class="name"><div class="h">일치율</div><span class="good">좋아 보임</span></div>
+        <div class="val">90%</div>
+      </div>
+      <div class="card pink metric alert">
+        <div class="name"><div class="h">실패 탐지율</div></div>
+        <div class="val">0%</div>
+      </div>
+      <div class="card pink metric">
+        <div class="name"><div class="h">kappa</div></div>
+        <div class="val">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">실패 탐지율·정상 통과율·kappa를 함께 봐야 합니다</div>
+</div>
+<script>
+  const FAIL = 7;
+  const human = document.getElementById('human'), judge = document.getElementById('judge');
+  for (let i = 1; i <= 10; i++) {
+    const ng = i === FAIL;
+    human.insertAdjacentHTML('beforeend',
+      `<div class="case ${ng ? 'ng' : 'ok'}"><span class="no">사례 ${i}</span><span class="badge ${ng ? 'fail' : 'pass'}">${ng ? 'fail' : 'pass'}</span></div>`);
+    judge.insertAdjacentHTML('beforeend', ng
+      ? `<div class="case miss"><div class="left"><span class="no">사례 ${i}</span><span class="misstag">놓친 실패</span></div><span class="stamp">pass</span></div>`
+      : `<div class="case ok"><span class="no">사례 ${i}</span><span class="stamp">pass</span></div>`);
+  }
+</script>
+</body></html>

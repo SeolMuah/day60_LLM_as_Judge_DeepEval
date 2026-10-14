@@ -1,0 +1,112 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  .stage { padding: 22px 60px 28px; gap: 20px; }
+  .main { flex: 1; min-height: 0; display: flex; gap: 26px; align-items: stretch; }
+  .panel { display: flex; flex-direction: column; gap: 12px; padding: 22px 26px 24px; min-width: 0; }
+  .panel.left { flex: 0 0 560px; }
+  .panel.right { flex: 1; }
+  .panel .h { font-size: 28px; }
+
+  /* 왼쪽: Pairwise */
+  .versus { display: flex; align-items: stretch; gap: 16px; margin-top: 8px; flex: 1; }
+  .ver { flex: 1; background: #fff; border: 2.5px solid var(--blue-bd); border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .ver .v { font-size: 46px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .ver .s { font-size: 21px; }
+  .vs { align-self: center; display: flex; }
+  .down { display: flex; justify-content: center; height: 54px; flex: none; }
+  .result { flex: 1.25; background: #fff; border: 2.5px solid var(--blue-bd); border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .result .win { font-size: 38px; padding: 8px 34px; color: var(--blue-ink); border-width: 3px; }
+  .result .t { font-size: 26px; font-weight: 700; color: var(--navy); }
+
+  /* 가운데 ≠ */
+  .neq { flex: none; width: 120px; display: flex; align-items: center; justify-content: center; }
+
+  /* 오른쪽: Direct Scoring 체크리스트 */
+  .toprow { display: flex; align-items: center; justify-content: space-between; }
+  .toprow .s { font-size: 21px; font-weight: 600; }
+  .table { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #fff;
+    border: 2px solid var(--purple-bd); border-radius: 16px; overflow: hidden; }
+  .tr { flex: 1; display: grid; grid-template-columns: 0.8fr 1fr 1fr; align-items: center;
+    border-top: 1.5px solid #e6e1f6; position: relative; }
+  .tr > div { display: flex; align-items: center; justify-content: center; }
+  .tr.head { flex: 0 0 46px; border-top: none; background: #ede7fd; }
+  .tr.head > div { font-size: 23px; font-weight: 800; color: var(--navy); }
+  .tr .q { font-size: 23px; font-weight: 700; color: var(--ink); }
+  .tr.both { background: var(--pink-bg); box-shadow: inset 0 0 0 2.5px var(--pink-bd); }
+  .tr.both .q { color: var(--pink-ink); font-weight: 800; }
+  /* S07: v1 ✗와 v2 ✗를 잇는 선 위에 '둘 다 fail' 표시 */
+  .tr.both .link { position: absolute; top: 0; bottom: 0;
+    left: calc(28.57% + 35.71% / 2 + 24px); right: calc(35.71% / 2 + 24px);
+    display: flex; align-items: center; justify-content: center; }
+  .tr.both .link::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px;
+    background: var(--pink-bd); border-radius: 2px; }
+  .tag { position: relative; padding: 3px 16px; border-radius: 999px; font-size: 20px; font-weight: 800; color: var(--pink-ink);
+    background: #fde5eb; border: 2px solid var(--pink-bd); white-space: nowrap; }
+  .mk { width: 36px; height: 36px; display: block; }
+  .sum { flex: none; display: grid; grid-template-columns: 0.8fr 1fr 1fr; align-items: center; height: 58px;
+    background: #fff; border: 2px solid var(--purple-bd); border-radius: 14px; }
+  .sum > div { display: flex; justify-content: center; }
+  .sum .lb { font-size: 22px; font-weight: 800; color: var(--muted); }
+  .sum .tot { font-size: 24px; font-weight: 800; color: var(--navy); }
+
+  /* 하단 결론 띠 */
+  .note { display: flex; align-items: center; justify-content: center; gap: 22px; padding: 18px 24px; font-size: 26px; }
+  .note .fl { color: var(--pink-ink); }
+  .note .arrow { width: 60px; }
+</style></head>
+<body>
+<div class="title">Pairwise 승자 ≠ 배포 가능</div>
+<div class="subtitle">Pairwise에서 더 나은 버전이 곧 배포 가능하다는 뜻은 아닙니다.</div>
+<div class="stage">
+  <div class="main">
+    <!-- 왼쪽: Pairwise -->
+    <div class="card blue panel left">
+      <span><span class="pill blue">상대 결과</span></span>
+      <div class="h">Pairwise · 어느 버전이 더 나은가?</div>
+      <div class="versus">
+        <div class="ver"><div class="v">v1</div><div class="s">답변</div></div>
+        <div class="vs"><svg width="44" height="28" viewBox="0 0 44 28"><line x1="8" y1="14" x2="36" y2="14" stroke="#2f4a73" stroke-width="4" stroke-linecap="round"/><polyline points="13,5 4,14 13,23" fill="none" stroke="#2f4a73" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="31,5 40,14 31,23" fill="none" stroke="#2f4a73" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ver"><div class="v">v2</div><div class="s">답변</div></div>
+      </div>
+      <div class="down"><svg width="40" height="54" viewBox="0 0 40 54"><line x1="20" y1="2" x2="20" y2="46" stroke="#2f4a73" stroke-width="4" stroke-linecap="round"/><polyline points="7,34 20,48 33,34" fill="none" stroke="#2f4a73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="result">
+        <span class="badge win">v1 우세</span>
+        <div class="t">더 나은 버전</div>
+      </div>
+    </div>
+
+    <!-- 가운데 ≠ -->
+    <div class="neq"><svg width="112" height="112" viewBox="0 0 112 112">
+      <line x1="12" y1="40" x2="100" y2="40" stroke="#1d2b45" stroke-width="11" stroke-linecap="round"/>
+      <line x1="12" y1="72" x2="100" y2="72" stroke="#1d2b45" stroke-width="11" stroke-linecap="round"/>
+      <line x1="74" y1="8" x2="38" y2="104" stroke="#1d2b45" stroke-width="11" stroke-linecap="round"/>
+    </svg></div>
+
+    <!-- 오른쪽: Direct Scoring -->
+    <div class="card purple panel right">
+      <div class="toprow"><span class="pill purple">절대 기준</span><span class="s">사람 판정 기준 상담 질문 8개</span></div>
+      <div class="h">Direct Scoring · 각 답이 기준을 통과하는가?</div>
+      <div class="table" id="tbl">
+        <div class="tr head"><div>질문</div><div>v1</div><div>v2</div></div>
+      </div>
+      <div class="sum"><div class="lb">합계</div><div class="tot">v1 5/8 통과</div><div class="tot">v2 3/8 통과</div></div>
+    </div>
+  </div>
+
+  <div class="note"><span><span class="fl">fail</span> 질문이 남아 있으면 배포하지 않기</span><div class="arrow"></div><span>고친 뒤 같은 사례로 다시 평가</span></div>
+</div>
+<script>
+  const P = '<svg class="mk" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#e3f3e8" stroke="#82c09c" stroke-width="2"/><polyline points="11,21 17.5,27.5 29,14" fill="none" stroke="#2f7d4f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const F = '<svg class="mk" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#fde5eb" stroke="#e8a2b5" stroke-width="2"/><line x1="13.5" y1="13.5" x2="26.5" y2="26.5" stroke="#b33b5a" stroke-width="4.5" stroke-linecap="round"/><line x1="26.5" y1="13.5" x2="13.5" y2="26.5" stroke="#b33b5a" stroke-width="4.5" stroke-linecap="round"/></svg>';
+  const v1 = {S01:1,S02:0,S03:1,S04:1,S05:0,S06:1,S07:0,S08:1};
+  const v2 = {S01:0,S02:1,S03:0,S04:0,S05:1,S06:0,S07:0,S08:1};
+  const tbl = document.getElementById('tbl');
+  for (const k of Object.keys(v1)) {
+    const both = !v1[k] && !v2[k];
+    tbl.insertAdjacentHTML('beforeend',
+      `<div class="tr${both ? ' both' : ''}"><div class="q">${k}</div><div>${v1[k] ? P : F}</div><div>${v2[k] ? P : F}</div>${both ? '<span class="link"><span class="tag">둘 다 fail</span></span>' : ''}</div>`);
+  }
+</script>
+</body></html>

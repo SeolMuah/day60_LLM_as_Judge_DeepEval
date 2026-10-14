@@ -1,0 +1,82 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  /* 왼쪽: 큰 카드(세 줄 모두 차지) / 가운데: 굵은 화살표(판사 모델 높이) / 오른쪽: 판사 모델 ↓ 점수 · 이유 */
+  .main { flex: 1; min-height: 0; display: grid;
+    grid-template-columns: 820px 96px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 76px minmax(0, 1fr); }
+  /* 왼쪽 큰 카드 */
+  .tc { grid-column: 1; grid-row: 1 / 4; display: flex; flex-direction: column; gap: 16px; padding: 22px 22px 24px; }
+  .tc .pill { font-size: 23px; padding: 7px 26px; }
+  .tc .pill .code { font-size: 22px; }
+  .fields { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 16px; }
+  .field { flex: 1; min-height: 0; display: flex; align-items: center; padding: 0 22px 0 24px; border-radius: 16px;
+    background: #fff; border: 2.5px solid var(--gray-bd); border-left-width: 12px; }
+  .field .k { width: 312px; flex: none; font-family: "DejaVu Sans Mono", monospace; font-weight: 700; font-size: 27px; color: var(--navy); }
+  .field .v { font-size: 31px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+  .f-blue { border-color: var(--blue-bd); } .f-pink { border-color: var(--pink-bd); }
+  .f-green { border-color: var(--green-bd); } .f-yellow { border-color: var(--yellow-bd); }
+  .field.off { background: var(--gray-bg); border-color: var(--gray-bd); border-style: dashed; border-left-width: 2.5px; padding-left: 33.5px; }
+  .field.off .k, .field.off .v { color: var(--gray-ink); }
+  .tag { margin-left: auto; padding: 7px 20px; border-radius: 999px; border: 2.5px solid var(--gray-bd);
+    background: #fff; color: var(--muted); font-size: 21px; font-weight: 700; white-space: nowrap; }
+  /* 화살표 */
+  .harrow { grid-column: 2; grid-row: 1; align-self: center; justify-self: center; }
+  .varrow { grid-column: 3; grid-row: 2; align-self: center; justify-self: center; }
+  /* 오른쪽 두 카드: 아이콘 + 큰 라벨을 가로로 배치해 카드를 채움 */
+  .side { grid-column: 3; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 40px; padding: 18px 24px; }
+  .judge { grid-row: 1; } .result { grid-row: 3; }
+  .side .ic { width: 222px; flex: none; display: flex; justify-content: center; }
+  .big { width: 238px; flex: none; font-size: 57px; font-weight: 800; color: var(--navy); letter-spacing: -0.5px; white-space: nowrap; }
+  .note { font-size: 25px; padding: 18px 24px; }
+</style></head>
+<body><div class="title">평가 사례(LLMTestCase)에 들어가는 정보</div>
+<div class="subtitle">다섯 칸은 답을 만드는 재료가 아니라, 모두 판사 모델에게 전달됩니다.</div>
+<div class="stage">
+  <div class="main">
+    <div class="card blue tc">
+      <span><span class="pill blue"><span class="code">LLMTestCase</span> 한 건</span></span>
+      <div class="fields">
+        <div class="field f-blue"><div class="k">input:</div><div class="v">질문</div></div>
+        <div class="field f-pink"><div class="k">actual_output:</div><div class="v">평가할 답변</div></div>
+        <div class="field f-green"><div class="k">expected_output:</div><div class="v">기준 답변</div></div>
+        <div class="field f-yellow"><div class="k">context:</div><div class="v">미리 준비한 근거</div></div>
+        <div class="field off"><div class="k">retrieval_context:</div><div class="v">검색 결과</div><span class="tag">이번 실습 사용 안 함</span></div>
+      </div>
+    </div>
+    <svg class="harrow" width="80" height="76" viewBox="0 0 80 76">
+      <line x1="6" y1="38" x2="66" y2="38" stroke="#2f4a73" stroke-width="10" stroke-linecap="round"/>
+      <polyline points="42,10 71,38 42,66" fill="none" stroke="#2f4a73" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="card purple side judge">
+      <!-- 저울 아이콘 -->
+      <div class="ic"><svg width="222" height="195" viewBox="0 0 150 132" fill="none" stroke="#5a43a6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="75" y1="14" x2="75" y2="116"/>
+        <line x1="20" y1="30" x2="130" y2="30"/>
+        <circle cx="75" cy="14" r="7" fill="#5a43a6"/>
+        <polyline points="22,32 6,72 38,72 22,32"/>
+        <polyline points="128,32 112,72 144,72 128,32"/>
+        <path d="M6,72 Q22,92 38,72" fill="#ede7fd"/>
+        <path d="M112,72 Q128,92 144,72" fill="#ede7fd"/>
+        <line x1="44" y1="118" x2="106" y2="118"/>
+      </svg></div>
+      <div class="big">판사 모델</div>
+    </div>
+    <svg class="varrow" width="64" height="70" viewBox="0 0 64 70">
+      <line x1="32" y1="5" x2="32" y2="56" stroke="#2f4a73" stroke-width="9" stroke-linecap="round"/>
+      <polyline points="8,36 32,62 56,36" fill="none" stroke="#2f4a73" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="card green side result">
+      <!-- 점수 막대 + 이유 줄 아이콘 -->
+      <div class="ic"><svg width="222" height="195" viewBox="0 0 150 132">
+        <rect x="8" y="4" width="134" height="124" rx="14" fill="#fff" stroke="#82c09c" stroke-width="4"/>
+        <rect x="26" y="24" width="98" height="16" rx="8" fill="#e3f3e8"/>
+        <rect x="26" y="24" width="68" height="16" rx="8" fill="#2f7d4f"/>
+        <line x1="26" y1="66" x2="124" y2="66" stroke="#9aa3b5" stroke-width="7" stroke-linecap="round"/>
+        <line x1="26" y1="86" x2="124" y2="86" stroke="#9aa3b5" stroke-width="7" stroke-linecap="round"/>
+        <line x1="26" y1="106" x2="94" y2="106" stroke="#9aa3b5" stroke-width="7" stroke-linecap="round"/>
+      </svg></div>
+      <div class="big">점수 · 이유</div>
+    </div>
+  </div>
+  <div class="note">이번 실습은 검색기를 실행하지 않습니다.</div>
+</div></body></html>

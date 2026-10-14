@@ -1,0 +1,127 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="../base.css">
+<style>
+  .stage { padding: 22px 44px 24px; gap: 20px; }
+  .main { flex: 1; position: relative; display: flex; align-items: stretch; }
+  .wires { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+
+  /* 왼쪽 레인 */
+  .lanes { width: 840px; flex: none; display: flex; flex-direction: column; gap: 16px; }
+  .grid4 { display: grid; grid-template-columns: 300px 60px 318px 84px; column-gap: 26px; align-items: center; }
+  .heads { flex: none; }
+  .heads .pill { justify-self: center; font-size: 20px; padding: 6px 20px; white-space: nowrap; }
+  .lane { flex: 1; align-items: stretch; }
+  .lane .arrow { align-self: center; width: 60px; }
+  .chip, .method { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; padding: 12px 16px; }
+  .chip .nm { font-size: 29px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+  .chip .ids { font-size: 22px; font-weight: 700; color: var(--blue-ink); line-height: 1.2; }
+  .method .mn { font-size: 29px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+  .method .sec { font-size: 22px; font-weight: 600; color: var(--muted); line-height: 1.2; }
+  .count { align-self: center; width: 84px; height: 84px; border-radius: 50%; background: #fff; border: 2.5px solid var(--gray-bd);
+    display: flex; align-items: center; justify-content: center; font-size: 27px; font-weight: 800; color: var(--navy);
+    box-shadow: 0 3px 8px rgba(29, 43, 69, 0.06); }
+
+  .gapcol { width: 96px; flex: none; }
+
+  /* 판사 성적표 */
+  .board { width: 320px; flex: none; display: flex; flex-direction: column; gap: 14px; padding: 20px 20px 22px; }
+  .board .bh { text-align: center; font-size: 30px; font-weight: 800; color: var(--navy); padding: 4px 0 6px; }
+  .board .it { flex: 1; background: #fff; border: 2px solid var(--green-bd); border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: var(--ink); }
+
+  /* 대조 */
+  .cmp { width: 96px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .cmp .pill { font-size: 22px; padding: 6px 16px; border-color: var(--arrow); }
+  .cmp .ghost { visibility: hidden; }
+
+  /* 사람 판정 */
+  .human { width: 160px; flex: none; align-self: stretch; padding: 12px 10px;
+    background: var(--blue-bg); border-color: var(--blue-bd); display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: 30px; font-weight: 800; color: var(--navy); line-height: 1.25; }
+
+  .note { font-size: 24px; padding: 16px 24px; }
+</style></head>
+<body><div class="title">평가 축마다 알맞은 방법으로 판정하고 한 표로 점검</div>
+<div class="subtitle">루나 평가 사례 15건의 판정 결과를 판사 성적표 하나로 모아 사람 판정과 대조합니다.</div>
+<div class="stage">
+  <div class="main" id="main">
+    <svg class="wires" id="wires" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <div class="lanes">
+      <div class="grid4 heads">
+        <span class="pill blue">평가 축</span><span></span><span class="pill yellow">판정 방법</span><span class="pill">사례 수</span>
+      </div>
+      <div class="grid4 lane">
+        <div class="card blue chip"><div class="nm">존중 표현·편향</div><div class="ids">L12–L15</div></div>
+        <div class="arrow"></div>
+        <div class="card pink method"><div class="mn">Toxicity·Bias 지표</div><div class="sec">(6-1)</div></div>
+        <div class="count">4건</div>
+      </div>
+      <div class="grid4 lane">
+        <div class="card blue chip"><div class="nm">페르소나</div><div class="ids">L01–L03</div></div>
+        <div class="arrow"></div>
+        <div class="card yellow method"><div class="mn">G-Eval</div><div class="sec">(6-2)</div></div>
+        <div class="count">3건</div>
+      </div>
+      <div class="grid4 lane">
+        <div class="card blue chip"><div class="nm">질문 충족·근거성</div><div class="ids">L04–L06, L09–L11</div></div>
+        <div class="arrow"></div>
+        <div class="card yellow method"><div class="mn">G-Eval</div><div class="sec">(6-3)</div></div>
+        <div class="count">6건</div>
+      </div>
+      <div class="grid4 lane">
+        <div class="card blue chip"><div class="nm">형식</div><div class="ids">L07·L08</div></div>
+        <div class="arrow"></div>
+        <div class="card purple method"><div class="mn">코드 검사</div><div class="sec">(6-4)</div></div>
+        <div class="count">2건</div>
+      </div>
+    </div>
+
+    <div class="gapcol"></div>
+
+    <div class="card green board">
+      <div class="bh">판사 성적표 (15건)</div>
+      <div class="it">일치율</div>
+      <div class="it">실패 탐지율</div>
+      <div class="it">정상 통과율</div>
+      <div class="it">kappa</div>
+    </div>
+
+    <div class="cmp">
+      <span class="pill">대조</span>
+      <svg width="96" height="40" viewBox="0 0 96 40" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#2f4a73" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 20 H86"/><path d="M25 6 L10 20 L25 34"/><path d="M71 6 L86 20 L71 34"/>
+        </g>
+      </svg>
+      <span class="pill ghost">대조</span>
+    </div>
+
+    <div class="card human">사람 판정</div>
+  </div>
+  <div class="note">서로 다른 지표 점수를 더해 하나의 품질 점수로 만들지 않습니다</div>
+</div>
+<script>
+function drawWires() {
+  const main = document.getElementById('main');
+  const mr = main.getBoundingClientRect();
+  const svg = document.getElementById('wires');
+  svg.setAttribute('width', mr.width); svg.setAttribute('height', mr.height);
+  svg.setAttribute('viewBox', `0 0 ${mr.width} ${mr.height}`);
+  const counts = [...document.querySelectorAll('.count')].map(e => e.getBoundingClientRect());
+  const b = document.querySelector('.board').getBoundingClientRect();
+  const x0 = Math.max(...counts.map(r => r.right)) - mr.left + 10;
+  const ys = counts.map(r => (r.top + r.bottom) / 2 - mr.top);
+  const bx = b.left - mr.left - 6;
+  const by = (b.top + b.bottom) / 2 - mr.top;
+  const tx = Math.round((x0 + bx) / 2) - 4;
+  let d = '';
+  ys.forEach(y => { d += `M${x0} ${y} H${tx} `; });
+  d += `M${tx} ${ys[0]} V${ys[ys.length - 1]} M${tx} ${by} H${bx}`;
+  const head = `M${bx - 15} ${by - 14} L${bx} ${by} L${bx - 15} ${by + 14}`;
+  svg.innerHTML = `<g fill="none" stroke="#2f4a73" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="${d}"/><path d="${head}"/></g>`;
+}
+drawWires();
+document.fonts.ready.then(drawWires);
+</script>
+</body></html>
